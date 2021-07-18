@@ -1,0 +1,37 @@
+table{
+    text-align:center;
+    width:100%;
+}
+  
+td{
+    padding-top:7px;
+    padding-bottom:7px;
+    /* font-size:40px; */
+}
+
+table th{
+    color:#eee;
+    background-color: rgb(78, 54, 24);
+}
+
+/* 偶数行の背景色変更 */
+tr:nth-child(2n) {
+    background: rgb(226, 239, 209);
+}
+
+/* 奇数行の背景色変更 */
+tr:nth-child(2n+1) {
+    background: rgb(238, 238, 238);
+}
+
+.title {
+    font-weight: bold;
+}
+
+.correct {
+    color: blue;
+}
+
+.incorrect {
+    color: red;
+}
