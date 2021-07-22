@@ -1,15 +1,21 @@
-<table>
-    <tr class="title">
-        <td>問題</td>
-        <td>解答</td>
-    </tr>
-    <ng-container *ngFor="let row of quizResult; let i = index">
-        <tr>
-            <td>第{{i + 1}}問</td>
-            <td>
-                <p class="correct" *ngIf="row === '0'">正解</p>
-                <p class="incorrect" *ngIf="row === '1'">不正解</p>
-            </td>
+<div class="host">
+    <table>
+        <tr class="title">
+            <td>問題</td>
+            <td>解答</td>
+            <td>解答/解説</td>
         </tr>
-    </ng-container>
-</table>
+        <ng-container *ngFor="let row of quizResult; let i = index">
+            <tr>
+                <td>第{{i + 1}}問</td>
+                <td>
+                    <p class="correct" *ngIf="row === '0'">正解</p>
+                    <p class="incorrect" *ngIf="row === '1'">不正解</p>
+                </td>
+                <td>
+                    <a href (click)="toCorrectAnswer(i)">解答/解説</a>
+                </td>
+            </tr>
+        </ng-container>
+    </table>
+</div>

@@ -11,6 +11,7 @@ export class ResultComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router:Router
   ) {}
 
   public quizResult: string[] = [];
@@ -22,6 +23,9 @@ export class ResultComponent implements OnInit {
     console.log(this.quizResult);
   }
   
+  public toCorrectAnswer(i:number){
+    this.router.navigate(['/correct'], {queryParams : {num: i}});
+  }
 
 }
 

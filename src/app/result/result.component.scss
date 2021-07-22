@@ -1,3 +1,8 @@
+.host{
+    width:800px;
+    margin:auto;
+}
+
 table{
     text-align:center;
     width:100%;
@@ -11,12 +16,12 @@ td{
 
 table th{
     color:#eee;
-    background-color: rgb(78, 54, 24);
+    background-color: rgb(17, 11, 80);
 }
 
 /* 偶数行の背景色変更 */
 tr:nth-child(2n) {
-    background: rgb(226, 239, 209);
+    background: rgb(211, 209, 239);
 }
 
 /* 奇数行の背景色変更 */
