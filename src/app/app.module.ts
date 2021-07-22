@@ -14,13 +14,15 @@ import { QuizComponent } from './quiz/quiz.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ResultComponent } from './result/result.component';
 import { MatTableModule } from '@angular/material/table';
+import { CorrectComponent } from './correct/correct.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PrivateComponent,
     QuizComponent,
-    ResultComponent
+    ResultComponent,
+    CorrectComponent
   ],
   imports: [
     BrowserModule,
