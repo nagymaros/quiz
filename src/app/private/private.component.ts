@@ -26,7 +26,6 @@ export class PrivateComponent implements OnInit {
   onSubmit() {
     console.log(this.keySet);
     sessionStorage.setItem('name', JSON.stringify(this.keySet.key));
-    // this.router.navigate(['../quiz'], { relativeTo: this.route });
     this.router.navigate(['/quiz']);
   }
 

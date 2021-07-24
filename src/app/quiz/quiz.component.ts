@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+import { QuizService } from '../quiz.service';
+import { CorrectService } from '../correct.service';
 
 @Component({
   selector: 'app-quiz',
@@ -11,135 +13,55 @@ export class QuizComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private quizService: QuizService,
+    private correctService: CorrectService
   ) { }
 
-  public pageNumber = 0;
-  
-
   /** 問題文 */
-  public sentence: string[] = [];
+  public problemSentence: string[] = [];
 
   /** 勘定項目 */
-  public accountItem = [
-    [
-      '借入金',
-      '手形貸付金',
-      '当座預金',
-    ],
-    [
-      'クレジット売掛金',
-      '支払手数料',
-      '受取手数料',
-      '売上',
-    ],
-    [
-      '土地',
-      '支払手数料',
-      '受取手数料'
-    ]
-  ];
-  /** 最後のページ */
-  public lastPageNumber = this.accountItem.length - 1;
+  public accountItem:string[][] = [];
 
   /** 金額 */
-  public money = [
-    [
-      '1,000',
-      '1,000'
-    ],
-    [
-      '200',
-      '500',
-      '4,500',
-      '4,800',
-      '5,000',
-    ],
-    [
-      '500',
-      '49,500',
-      '50,000',
-      '50,500',
-      '50,500',
-    ]
-  ];
+  public money:string[][] = [];
 
-  public debit = [
-    ['現金'],
-    ['現金'],
-    ['現金']
-  ];
+  /** 借方 */
+  public debit:string[][] = [];
 
-  public debitMoney = [
-    ['1,000'],
-    ['5,000'],
-    ['5000,000']
-  ];
+  /** 借方の金額 */
+  public debitMoney:string[][] = [];
 
-  public credit = [
-    ['貸付金'],
-    ['売上高'],
-    ['売上高'],
-  ];
+  /** 貸方 */
+  public credit:string[][] = [];
 
-  public creditMoney = [
-    ['1,000'],
-    ['5,000'],
-    ['5000,000']
-  ];
+  /** 貸方の金額 */
+  public creditMoney:string[][] = [];
 
-  public debitCorrectAnswer = [
-    [
-      {
-        key:'現金',
-        value: '1,000'
-      }
-    ],
-    [
-      {
-        key:'クレジット売掛金',
-        value: '4,800'
-      },
-      {
-        key:'支払手数料',
-        value: '200'
-      }
-    ],
-    [
-      {
-        key:'土地',
-        value: '50,500'
-      },
-    ]
-  ];
+  /**借方の正解 */
+  public debitCorrectAnswer: { key: string, value: string }[][] = [];
 
-  public creditCorrectAnswer = [
-    [
-      {
-        key:'借入金',
-        value: '1,000'
-      }
-    ],
-    [
-      {
-        key:'売上',
-        value: '5,000'
-      }
-    ],
-    [
-      {
-        key:'現金',
-        value: '50,500'
-      },
-    ]
-  ];
+  /**貸方の正解 */
+  public creditCorrectAnswer: { key: string, value: string }[][] = [];
+
+  /** ページ数 */
+  public pageNumber = 0;
+
+  /** 最後のページ */
+  public lastPageNumber = 0;
 
   ngOnInit(): void {
-    const name = window.sessionStorage.getItem('name')?.replace(/^"(.*)"$/, '$1');;
-    this.sentence =  [
-      `株式会社${name}は、銀行から現金1,000円を借入れた。仕訳で間違えている部分を修正したい。`,
-      `株式会社${name}は、商品5,000円をクレジット払いの条件で販売した。なお、信販会社への手数料（販売代金の4％）は販売時に計上する。`,
-      `${name}社は、土地50,000円を購入し、 代金は手数料500円とともに現金で支払った。`,
-    ];
+    this.problemSentence = this.quizService.getProblemSentence();
+    this.accountItem = this.quizService.accountItem;
+    this.money = this.quizService.money;
+    this.debit = this.quizService.debit;
+    this.debitMoney = this.quizService.debitMoney;
+    this.credit = this.quizService.credit;
+    this.creditMoney = this.quizService.creditMoney;
+    this.debitCorrectAnswer = this.correctService.debitCorrectAnswer;
+    this.creditCorrectAnswer = this.correctService.creditCorrectAnswer;
+    // 最終ページを設定
+    this.lastPageNumber = this.accountItem.length - 1;
   }
 
   public drop(event: CdkDragDrop<string[]>) {
@@ -185,23 +107,23 @@ export class QuizComponent implements OnInit {
       })
     })
     const quizResult = this.compareCorrectAnswer(debitResult, creditResult);
-    this.router.navigate(['/result'], {queryParams : {quizResult: quizResult}});
+    this.router.navigate(['/result'], { queryParams: { quizResult: quizResult } });
   }
 
-  private compareCorrectAnswer(debitResult: {key: string; value: string;}[][], creditResult: {key: string; value: string;} [][]) {
+  private compareCorrectAnswer(debitResult: { key: string; value: string; }[][], creditResult: { key: string; value: string; }[][]) {
     // 借方を正解と比較する
     const quizDebitResult = debitResult.map((result, i) => {
       const resultArray = result.map(data => {
         const a = this.debitCorrectAnswer[i].find(answer => answer.key == data.key);
-        if(a?.value == data.value){
+        if (a?.value == data.value) {
           return true;
-        }else{
+        } else {
           return false;
         }
       })
-      if(resultArray.includes(false)){
+      if (resultArray.includes(false)) {
         return false;
-      }else{
+      } else {
         return true;
       }
     });
@@ -211,23 +133,23 @@ export class QuizComponent implements OnInit {
     const quizCreditResult = creditResult.map((result, i) => {
       const resultArray = result.map(data => {
         const a = this.creditCorrectAnswer[i].find(answer => answer.key == data.key);
-        if(a?.value == data.value){
+        if (a?.value == data.value) {
           return true;
-        }else{
+        } else {
           return false;
         }
       })
-      if(resultArray.includes(false)){
+      if (resultArray.includes(false)) {
         return false;
-      }else{
+      } else {
         return true;
       }
     });
     console.log(quizCreditResult);
-    
+
     // 借方と貸方の解答比較
     const quizResult = quizDebitResult.map((debit, i) => {
-      if (debit === true && quizCreditResult[i]=== true) {
+      if (debit === true && quizCreditResult[i] === true) {
         return 0; // 正解
       } else {
         return 1; // 不正解

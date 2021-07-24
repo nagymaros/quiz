@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CorrectService } from '../correct.service';
+import { QuizService } from '../quiz.service';
 
 @Component({
   selector: 'app-correct',
@@ -10,52 +12,36 @@ export class CorrectComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private quizService: QuizService,
+    private correctService: CorrectService
   ) { }
 
   public num: number = 0;
 
+  /** 問題文 */
   public problemSentence: string[] = [];
 
-  public sentence = [
-    ["現金の借り入れたので、『現金（資産）』の増加と考え、左に仕訳します。銀行に対する借金が増えたので、『借入金（負債）』の増加と考え、右に仕訳します"],
-    ["クレジットカードによって商品を売り上げたとき、信販会社は当社の代わりにお客さんから代金を回収します。 そのため当社はクレジットカード会社には手数料を払わなければならないのですが、この手数料は『支払手数料（費用）』（しはらいてすうりょう）として仕訳します。商品を売り上げた際、売上額から支払手数料を差し引かれた残額を『クレジット売掛金』として処理します。クレジット売掛金  =  売上  - 支払手数料"],
-    ["固定資産を買う時は、手数料がかかることがあります。例えば、事務所を買う時には、不動産の仲介手数料がかかりますよね。固定資産そのものの値段を、購入代価（こうにゅうだいか）手数料のことを、付随費用（ふずいひよう）。購入代価と付随費用を合計したものを取得原価（しゅとくげんか）と言います。取得原価  =  購入代価  +  付随費用。仕訳する時の金額には、取得原価を記入します。"]
-  ];
+  /** 解説 */
+  public explanation: string[][] = [];
 
-  public debit = [
-    ['現金'],
-    ['クレジット売掛金', '支払手数料'],
-    ['土地']
-  ];
+  public debit: string[][]  = [];
 
-  public debitMoney = [
-    ['1,000'],
-    ['4,800', '200'],
-    ['50,500']
-  ];
+  public debitMoney: string[][] = [];
 
-  public credit = [
-    ['借入金'],
-    ['売上'],
-    ['現金'],
-  ];
+  public credit: string[][] = [];
 
-  public creditMoney = [
-    ['1,000'],
-    ['5,000'],
-    ['50,500']
-  ];
+  public creditMoney: string[][] = [];
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.num = parseInt(params['num']);
     });
-    const name = window.sessionStorage.getItem('name')?.replace(/^"(.*)"$/, '$1');;
-    this.problemSentence =  [
-      `株式会社${name}は、銀行から現金1,000円を借入れた。仕訳で間違えている部分を修正したい。`,
-      `株式会社${name}は、商品5,000円をクレジット払いの条件で販売した。なお、信販会社への手数料（販売代金の4％）は販売時に計上する。`,
-      `${name}社は、土地50,000円を購入し、 代金は手数料500円とともに現金で支払った。`,
-    ];
+    this.problemSentence = this.quizService.getProblemSentence();
+    this.explanation = this.correctService.explanation;
+    this.debit = this.correctService.getCorrectDebit();
+    this.debitMoney = this.correctService.getCorrectDebitMoney();
+    this.credit = this.correctService.getCorrectCrebit();
+    this.creditMoney = this.correctService.getCorrectCreditMoney();
   }
 
 }
