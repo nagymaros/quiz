@@ -1,40 +1,41 @@
 <div class="host">
-    <div class="box">
-      <div class="box4">
-        <p class='title'>第{{num + 1}}問</p>
-        <p class='text'>{{sentence[num]}}</p>
-      </div>
-  
-      <div class="answer-container">
-        <h3>借方</h3>
-  
-        <div cdkDropList #accountItemAnswerList="cdkDropList" [cdkDropListData]="debit[num]" class="answer-list">
-          <div class="todo-box" *ngFor="let item of debit[num]" cdkDrag>{{item}}</div>
-        </div>
-      </div>
-  
-      <div class="answer-container">
-        <h3>借方金額</h3>
-  
-        <div cdkDropList #moneyAnswerList="cdkDropList" [cdkDropListData]="debitMoney[num]" class="answer-list">
-          <div class="todo-box" *ngFor="let item of debitMoney[num]" cdkDrag>{{item}}</div>
-        </div>
-      </div>
-  
-      <div class="answer-container">
-        <h3>貸方</h3>
-  
-        <div cdkDropList #accountItemAnswerList2="cdkDropList" [cdkDropListData]="credit[num]" class="answer-list">
-          <div class="todo-box" *ngFor="let item of credit[num]" cdkDrag>{{item}}</div>
-        </div>
-      </div>
-  
-      <div class="answer-container">
-        <h3>貸方金額</h3>
-  
-        <div cdkDropList #moneyAnswerList2="cdkDropList" [cdkDropListData]="creditMoney[num]" class="answer-list">
-          <div class="todo-box" *ngFor="let item of creditMoney[num]" cdkDrag>{{item}}</div>
-        </div>
+  <div class="box">
+    <div class="box4">
+      <p class='title'>第{{num + 1}}問</p>
+      <p class='problemText'>問題文：{{problemSentence[num]}}</p>
+      <p class='text'>解説：{{sentence[num]}}</p>
     </div>
+
+    <div class="answer-container">
+      <h3>借方</h3>
+
+      <div cdkDropList #accountItemAnswerList="cdkDropList" [cdkDropListData]="debit[num]" class="answer-list">
+        <div class="todo-box" *ngFor="let item of debit[num]" cdkDrag>{{item}}</div>
+      </div>
+    </div>
+
+    <div class="answer-container">
+      <h3>借方金額</h3>
+
+      <div cdkDropList #moneyAnswerList="cdkDropList" [cdkDropListData]="debitMoney[num]" class="answer-list">
+        <div class="todo-box" *ngFor="let item of debitMoney[num]" cdkDrag>{{item}}</div>
+      </div>
+    </div>
+
+    <div class="answer-container">
+      <h3>貸方</h3>
+
+      <div cdkDropList #accountItemAnswerList2="cdkDropList" [cdkDropListData]="credit[num]" class="answer-list">
+        <div class="todo-box" *ngFor="let item of credit[num]" cdkDrag>{{item}}</div>
+      </div>
+    </div>
+
+    <div class="answer-container">
+      <h3>貸方金額</h3>
+
+      <div cdkDropList #moneyAnswerList2="cdkDropList" [cdkDropListData]="creditMoney[num]" class="answer-list">
+        <div class="todo-box" *ngFor="let item of creditMoney[num]" cdkDrag>{{item}}</div>
+      </div>
     </div>
   </div>
+</div>

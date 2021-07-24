@@ -14,6 +14,8 @@ export class CorrectComponent implements OnInit {
 
   public num: number = 0;
 
+  public problemSentence: string[] = [];
+
   public sentence = [
     ["現金の借り入れたので、『現金（資産）』の増加と考え、左に仕訳します。銀行に対する借金が増えたので、『借入金（負債）』の増加と考え、右に仕訳します"],
     ["クレジットカードによって商品を売り上げたとき、信販会社は当社の代わりにお客さんから代金を回収します。 そのため当社はクレジットカード会社には手数料を払わなければならないのですが、この手数料は『支払手数料（費用）』（しはらいてすうりょう）として仕訳します。商品を売り上げた際、売上額から支払手数料を差し引かれた残額を『クレジット売掛金』として処理します。クレジット売掛金  =  売上  - 支払手数料"],
@@ -48,6 +50,12 @@ export class CorrectComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.num = parseInt(params['num']);
     });
+    const name = window.sessionStorage.getItem('name')?.replace(/^"(.*)"$/, '$1');;
+    this.problemSentence =  [
+      `株式会社${name}は、銀行から現金1,000円を借入れた。仕訳で間違えている部分を修正したい。`,
+      `株式会社${name}は、商品5,000円をクレジット払いの条件で販売した。なお、信販会社への手数料（販売代金の4％）は販売時に計上する。`,
+      `${name}社は、土地50,000円を購入し、 代金は手数料500円とともに現金で支払った。`,
+    ];
   }
 
 }
